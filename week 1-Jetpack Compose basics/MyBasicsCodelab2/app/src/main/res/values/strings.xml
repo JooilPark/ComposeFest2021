@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyBasicsCodelab2</string>
+    <string name="show_less">닫기</string>
+    <string name="show_more">열어 보기</string>
+</resources>
