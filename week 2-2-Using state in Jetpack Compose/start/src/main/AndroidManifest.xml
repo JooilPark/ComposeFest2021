@@ -38,10 +38,26 @@
         </activity>
         <activity android:name="com.codelabs.state.examples.HelloCodelabActivity"
             android:exported="true"
-            />
+            android:label="HelloCodelabActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity android:name="com.codelabs.state.examples.HelloCodeLabActivityWithViewModel"
             android:exported="true"
-            />
+            android:label="HelloCodeLabActivityWithViewModel"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

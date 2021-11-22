@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.state.databinding.ActivityHelloCodelabBinding
@@ -39,7 +40,7 @@ import com.codelabs.state.databinding.ActivityHelloCodelabBinding
  * An example showing unstructured state stored in an Activity.
  */
 class HelloCodelabActivity : AppCompatActivity() {
-
+    private val helloViewModel by viewModels<HelloViewModel>()
     private lateinit var binding: ActivityHelloCodelabBinding
     var name = ""
 
@@ -50,10 +51,15 @@ class HelloCodelabActivity : AppCompatActivity() {
 
         // doAfterTextChange is an event that modifies state
         binding.textInput.doAfterTextChanged { text ->
-            name = text.toString()
+            helloViewModel.onNameChanged(text.toString())
             updateHello()
         }
+        helloViewModel.name.observe(this , Observer {
+            binding.helloText.text = "Hello, $name"
+        })
+
     }
+
 
     /**
      * This function updates the screen to show the current state of [name]
