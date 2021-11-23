@@ -20,7 +20,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,11 +87,12 @@ fun TodoScreen(
  * @param modifier modifier for this element
  */
 @Composable
-fun TodoRow(todo: TodoItem, onItemClicked: (TodoItem) -> Unit, modifier: Modifier = Modifier,
-            iconAlpha: Float = remember(todo.id ) {
-                randomTint()
-            }
-            ) {
+fun TodoRow(
+    todo: TodoItem, onItemClicked: (TodoItem) -> Unit, modifier: Modifier = Modifier,
+    iconAlpha: Float = remember(todo.id) {
+        randomTint()
+    },
+) {
     Row(
         modifier = modifier
             .clickable { onItemClicked(todo) }
@@ -141,22 +145,49 @@ fun TodoInputTextField(text: String, onTextChange: (String) -> Unit, modifier: M
 @Composable
 fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
+    val (icon, setIcon) = remember { mutableStateOf(TodoIcon.Default) }
+    val iconsVisivle = text.isNotBlank()
+    val submit = {
+        onItemComplete(TodoItem(text, icon))
+        setIcon(TodoIcon.Default)
+        setText("")
+    }
+    Column(content = TodoItemInput(text = text,
+        setTextChange = setText,
+        submit = submit,
+        onItemComplete = onItemComplete,
+        setIconChange = setIcon,
+        iconsVisivle = iconsVisivle,
+        icon = icon))
+}
 
-    Column {
+@Composable
+private fun TodoItemInput(
+    text: String,
+    setTextChange: (String) -> Unit,
+    submit: () -> Unit,
+    onItemComplete: (TodoItem) -> Unit,
+    setIconChange: (TodoIcon) -> Unit,
+    iconsVisivle: Boolean,
+    icon: TodoIcon,
+): @Composable() (ColumnScope.() -> Unit) =
+    {
         Row(Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp)
         ) {
-            TodoInputTextField(
-                text, setText,
+            TodoInputText(
+                text, setTextChange,
                 Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                onImeAction = submit
             )
             TodoEditButton(
                 onClick = {
                     onItemComplete(TodoItem(text))
-                    setText("")
+                    setIconChange(TodoIcon.Default)
+                    setTextChange("")
 
                 },
                 text = "Add",
@@ -164,5 +195,9 @@ fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
                 enabled = text.isNotBlank()
             )
         }
+        if (iconsVisivle) {
+            AnimatedIconRow(icon = icon, onIconChange = setIconChange, Modifier.padding(top = 8.dp))
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
-}
