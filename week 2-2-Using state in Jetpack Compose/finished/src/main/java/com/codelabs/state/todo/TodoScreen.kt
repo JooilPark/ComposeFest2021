@@ -198,7 +198,7 @@ fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit, buttonText: String = 
         submit = submit,
         iconsVisible = text.isNotBlank()
     ) {
-        TodoEditButton(onClick = submit, text = buttonText, enabled = text.isNotBlank())
+        TodoEditButton(onClick = submit, text = "추가", enabled = text.isNotBlank())
     }
 }
 

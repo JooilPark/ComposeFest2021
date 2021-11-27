@@ -16,6 +16,20 @@
 
 package com.codelabs.state.todo
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.codelabs.state.util.generateRandomTodoItem
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+
 class TodoViewModelTest {
-    // TODO: Write tests
+    @Test
+    fun whenRemoveingItem_updatelist(){
+        val viewmodel = TodoViewModel()
+        val item = generateRandomTodoItem()
+        val item2 = generateRandomTodoItem()
+        viewmodel.removeItem(item)
+
+        assertThat(viewmodel.todoItems).isEqualTo(listOf(item2))
+
+    }
 }

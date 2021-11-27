@@ -22,8 +22,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import com.codelabs.state.ui.StateCodelabTheme
 
 class TodoActivity : AppCompatActivity() {
@@ -47,7 +45,12 @@ class TodoActivity : AppCompatActivity() {
         TodoScreen(
             items = todoViewModel.todoItems,
             onAddItem = todoViewModel::addItem, // in the next steps we'll complete this
-            onRemoveItem = todoViewModel::removeItem// in the next steps we'll complete this
+            onRemoveItem = todoViewModel::removeItem,// in the next steps we'll complete this
+            currentlyEditing = todoViewModel.currentEditItem,
+            onStartEdit = todoViewModel::onEditItemSelected,
+            onEditItemChange = todoViewModel::onEdititemChange,
+            onEditDone = todoViewModel::onEditDone
+
         )
     }
 
